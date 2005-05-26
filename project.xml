@@ -5,8 +5,8 @@
   <pomVersion>3</pomVersion>
   <name>idegaWeb Boxoffice Block</name>
   <artifactId>com.idega.block.boxoffice</artifactId>
-  <currentVersion>1.0.1</currentVersion>
-  <!--currentVersion>1.0-SNAPSHOT</currentVersion-->
+  <!--currentVersion>1.0.1</currentVersion-->
+  <currentVersion>1.0-SNAPSHOT</currentVersion>
 
   <inceptionYear>2000</inceptionYear>
   <shortDescription>Boxoffice</shortDescription>
