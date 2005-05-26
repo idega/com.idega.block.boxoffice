@@ -16,6 +16,11 @@
       <name>1.0.1</name>
       <tag>BOXOFFICE_1_01</tag>
     </version>
+    <version>
+      <id>1.0.1</id>
+      <name>1.0.1</name>
+      <tag>BOXOFFICE_1_0_1</tag>
+    </version>
   </versions>
   <branches/>
   <developers>
