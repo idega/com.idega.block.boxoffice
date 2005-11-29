@@ -228,7 +228,7 @@ public class BoxFinder {
 		if (links != null) {
 			if (userId > 0) {
 				for (int i = 0; i < links.length; i++) {
-					BoxLink link = (BoxLink) links[i];
+					BoxLink link = links[i];
 					if (link.getUserID() == userId) {
 						ret.add(link);
 					}
