@@ -270,7 +270,7 @@ public static final int PAGE = 3;
 
     if ( !update ) {
       try {
-        link.setCreationDate(new IWTimestamp().getTimestampRightNow());
+        link.setCreationDate(IWTimestamp.getTimestampRightNow());
         link.setBoxID(boxID);
         link.setUserID(userID);
         link.insert();
