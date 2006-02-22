@@ -4,6 +4,7 @@ package com.idega.block.boxoffice.presentation;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Locale;
+
 import com.idega.block.boxoffice.business.BoxBusiness;
 import com.idega.block.boxoffice.business.BoxFinder;
 import com.idega.block.boxoffice.data.BoxLink;
@@ -12,12 +13,9 @@ import com.idega.builder.presentation.IBPageChooser;
 import com.idega.core.accesscontrol.business.LoginBusinessBean;
 import com.idega.core.localisation.business.ICLocaleBusiness;
 import com.idega.core.localisation.presentation.ICLocalePresentation;
-import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
-import com.idega.idegaweb.block.presentation.Builderaware;
 import com.idega.idegaweb.presentation.IWAdminWindow;
 import com.idega.presentation.IWContext;
-import com.idega.presentation.Image;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.ui.CloseButton;
 import com.idega.presentation.ui.DropdownMenu;
@@ -29,26 +27,17 @@ public class BoxEditorWindow extends IWAdminWindow{
 
 private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.boxoffice";
 private boolean _isAdmin = false;
-private boolean _superAdmin = false;
 private boolean _update = false;
-private boolean _save = false;
-private int _iObjInsId = -1;
-
 private int _boxID = -1;
 private int _boxCategoryID = -1;
 private int _linkID = -1;
 private int _userID = -1;
 private boolean _newObjInst = false;
-private String _newWithAttribute;
-private Image _editImage;
-private Image _createImage;
-private Image _deleteImage;
 private int _type = -1;
 private int _fileID = -1;
 private int _pageID = -1;
 private String _target;
 
-private IWBundle _iwb;
 private IWResourceBundle _iwrb;
 
 public BoxEditorWindow(){
@@ -64,8 +53,6 @@ public BoxEditorWindow(){
      * @todo permission
      */
     _isAdmin = true; //AccessControl.hasEditPermission(this,iwc);
-    _superAdmin = iwc.hasEditPermission(this);
-    _iwb = iwc.getIWMainApplication().getBundle(Builderaware.IW_CORE_BUNDLE_IDENTIFIER);
     _iwrb = getResourceBundle(iwc);
     addTitle(_iwrb.getLocalizedString("box_admin","Box Admin"));
     Locale currentLocale = iwc.getCurrentLocale();
@@ -79,10 +66,6 @@ public BoxEditorWindow(){
     catch (Exception e) {
       _userID = -1;
     }
-
-    _editImage = _iwb.getImage("shared/edit.gif");
-    _createImage = _iwb.getImage("shared/create.gif");
-    _deleteImage = _iwb.getImage("shared/delete.gif");
 
     String sLocaleId = iwc.getParameter(BoxBusiness.PARAMETER_LOCALE_DROP);
 

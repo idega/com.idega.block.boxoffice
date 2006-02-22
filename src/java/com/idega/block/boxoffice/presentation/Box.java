@@ -75,8 +75,6 @@ public class Box extends Block implements Builderaware {
 	private int _numberOfDisplayed;
 	private String _categoryStyle;
 	private String _linkStyle;
-	private String _visitedStyle;
-	private String _activeStyle;
 	private String _hoverStyle;
 	private String _name;
 	private String _headerStyle;
@@ -87,8 +85,6 @@ public class Box extends Block implements Builderaware {
 	private boolean iShowCategoryText = true;
 	private int iSpaceBetween = 0;
 	private boolean iUseNoStyling = false;
-
-	private String _target;
 
 	public Box() {
 		setDefaultValues();
@@ -638,10 +634,7 @@ public class Box extends Block implements Builderaware {
 		_numberOfDisplayed = 4;
 		_categoryStyle = "font-family: Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: bold";
 		_linkStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
-		_visitedStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
-		_activeStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
 		_hoverStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
-		_target = Link.TARGET_TOP_WINDOW;
 	}
 
 	public void setNumberOfColumns(int columns) {
@@ -707,7 +700,6 @@ public class Box extends Block implements Builderaware {
 	}
 
 	public void setTarget(String target) {
-		_target = target;
 	}
 
 	public void setShowOnlyBelongingToUser(boolean show) {
@@ -723,8 +715,6 @@ public class Box extends Block implements Builderaware {
 	 */
 	public void setLinkStyle(String linkStyle, String activeStyle, String visitedStyle, String hoverStyle) {
 		_linkStyle = linkStyle;
-		_visitedStyle = linkStyle;
-		_activeStyle = visitedStyle;
 		_hoverStyle = hoverStyle;
 	}
 

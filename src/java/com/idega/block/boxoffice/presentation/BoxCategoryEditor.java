@@ -34,10 +34,6 @@ private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.boxoffice";
 
 private boolean _isAdmin = false;
 
-private boolean _save = false;
-
-private boolean _update = false;
-
 private int _userID = -1;
 
 private int _boxID = -1;
@@ -233,8 +229,6 @@ public BoxCategoryEditor(){
       }
 
       else {
-
-        _update = true;
 
       }
 
