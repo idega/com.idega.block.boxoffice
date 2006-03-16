@@ -13,6 +13,7 @@ import com.idega.builder.presentation.IBPageChooser;
 import com.idega.core.accesscontrol.business.LoginBusinessBean;
 import com.idega.core.localisation.business.ICLocaleBusiness;
 import com.idega.core.localisation.presentation.ICLocalePresentation;
+import com.idega.idegaweb.IWCacheManager;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.presentation.IWAdminWindow;
 import com.idega.presentation.IWContext;
@@ -340,12 +341,14 @@ public BoxEditorWindow(){
 
       iwc.setSessionAttribute(BoxBusiness.PARAMETER_LINK_ID,new Integer(linkID));
     }
+		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
   }
 
   private void deleteBoxLink(IWContext iwc) {
     System.out.println("Deleting...");
     iwc.removeSessionAttribute(BoxBusiness.PARAMETER_LINK_ID);
     BoxBusiness.deleteLink(_linkID);
+		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
     setParentToReload();
     close();
   }

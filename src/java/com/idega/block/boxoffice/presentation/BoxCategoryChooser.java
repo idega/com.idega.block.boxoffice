@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
 import com.idega.block.boxoffice.business.BoxBusiness;
 import com.idega.block.boxoffice.business.BoxFinder;
 import com.idega.block.boxoffice.data.BoxCategory;
@@ -12,6 +13,7 @@ import com.idega.block.boxoffice.data.BoxEntity;
 import com.idega.block.text.business.TextFinder;
 import com.idega.block.text.data.LocalizedText;
 import com.idega.core.localisation.business.ICLocaleBusiness;
+import com.idega.idegaweb.IWCacheManager;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.presentation.IWAdminWindow;
 import com.idega.presentation.IWContext;
@@ -248,6 +250,8 @@ public class BoxCategoryChooser extends IWAdminWindow {
 			}
 
 		}
+		
+		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
 
 		setParentToReload();
 

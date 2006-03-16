@@ -93,6 +93,7 @@ public class Box extends Block implements Builderaware {
 	public Box(int boxID) {
 		this();
 		_boxID = boxID;
+		setCacheable(getCacheKey(), (20 * 60 * 1000));
 	}
 
 	public Box(String attribute) {
@@ -100,6 +101,10 @@ public class Box extends Block implements Builderaware {
 		_attribute = attribute;
 	}
 
+	public String getCacheKey() {
+		return "box_cache";
+	}
+	
 	public void main(IWContext iwc) throws Exception {
 		_iwrb = getResourceBundle(iwc);
 		_iwbBox = getBundle(iwc);

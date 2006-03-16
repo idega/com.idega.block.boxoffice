@@ -13,6 +13,7 @@ import com.idega.core.accesscontrol.business.LoginBusinessBean;
 import com.idega.core.localisation.business.ICLocaleBusiness;
 import com.idega.core.localisation.presentation.ICLocalePresentation;
 import com.idega.idegaweb.IWBundle;
+import com.idega.idegaweb.IWCacheManager;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.block.presentation.Builderaware;
 import com.idega.idegaweb.presentation.IWAdminWindow;
@@ -352,6 +353,7 @@ public BoxCategoryEditor(){
 
     }
 
+		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
   }
 
 
