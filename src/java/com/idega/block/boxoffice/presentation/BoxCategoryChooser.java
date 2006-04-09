@@ -45,10 +45,10 @@ public class BoxCategoryChooser extends IWAdminWindow {
 	}
 
 	public void main(IWContext iwc) throws Exception {
-		_isAdmin = true; // AccessControl.hasEditPermission(this,iwc);
-		_iwrb = getResourceBundle(iwc);
+		this._isAdmin = true; // AccessControl.hasEditPermission(this,iwc);
+		this._iwrb = getResourceBundle(iwc);
 
-		addTitle(_iwrb.getLocalizedString("box_category_choose", "Category Chooser"));
+		addTitle(this._iwrb.getLocalizedString("box_category_choose", "Category Chooser"));
 
 		Locale currentLocale = iwc.getCurrentLocale();
 		Locale chosenLocale;
@@ -73,7 +73,7 @@ public class BoxCategoryChooser extends IWAdminWindow {
 
 		}
 
-		if (_isAdmin) {
+		if (this._isAdmin) {
 
 			processForm(iwc, iLocaleId, sLocaleId);
 
@@ -93,13 +93,13 @@ public class BoxCategoryChooser extends IWAdminWindow {
 
 			try {
 
-				_boxID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID));
+				this._boxID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID));
 
 			}
 
 			catch (NumberFormatException e) {
 
-				_boxID = -1;
+				this._boxID = -1;
 
 			}
 
@@ -153,7 +153,7 @@ public class BoxCategoryChooser extends IWAdminWindow {
 
 		right.selectAllOnSubmit();
 
-		List categoriesInBox = BoxFinder.getCategoriesInBox(_boxID);
+		List categoriesInBox = BoxFinder.getCategoriesInBox(this._boxID);
 
 		Iterator iter = null;
 
@@ -209,11 +209,11 @@ public class BoxCategoryChooser extends IWAdminWindow {
 
 		}
 
-		formTable.add(new SubmitButton(_iwrb.getLocalizedImageButton("close", "CLOSE"), BoxBusiness.PARAMETER_MODE, BoxBusiness.PARAMETER_CLOSE), 1, 2);
+		formTable.add(new SubmitButton(this._iwrb.getLocalizedImageButton("close", "CLOSE"), BoxBusiness.PARAMETER_MODE, BoxBusiness.PARAMETER_CLOSE), 1, 2);
 
-		formTable.add(new SubmitButton(_iwrb.getLocalizedImageButton("save", "SAVE"), BoxBusiness.PARAMETER_MODE, BoxBusiness.PARAMETER_SAVE), 1, 2);
+		formTable.add(new SubmitButton(this._iwrb.getLocalizedImageButton("save", "SAVE"), BoxBusiness.PARAMETER_MODE, BoxBusiness.PARAMETER_SAVE), 1, 2);
 
-		myForm.add(new HiddenInput(BoxBusiness.PARAMETER_BOX_ID, Integer.toString(_boxID)));
+		myForm.add(new HiddenInput(BoxBusiness.PARAMETER_BOX_ID, Integer.toString(this._boxID)));
 
 		formTable.add(sdb, 1, 1);
 
@@ -225,7 +225,7 @@ public class BoxCategoryChooser extends IWAdminWindow {
 
 	private void save(IWContext iwc) {
 
-		BoxEntity box = BoxFinder.getBox(_boxID);
+		BoxEntity box = BoxFinder.getBox(this._boxID);
 
 		String[] detach = iwc.getParameterValues(BoxBusiness.CATEGORY_SELECTION + "_left");
 
@@ -233,7 +233,7 @@ public class BoxCategoryChooser extends IWAdminWindow {
 
 			for (int a = 0; a < detach.length; a++) {
 
-				BoxBusiness.detachCategory(_boxID, Integer.parseInt(detach[a]));
+				BoxBusiness.detachCategory(this._boxID, Integer.parseInt(detach[a]));
 
 			}
 

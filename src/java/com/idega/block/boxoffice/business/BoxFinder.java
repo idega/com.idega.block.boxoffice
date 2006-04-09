@@ -107,8 +107,9 @@ public class BoxFinder {
 	public static List getCategoriesInBox(BoxEntity box, int userID) {
 		try {
 			List list = null;
-			if (box != null)
+			if (box != null) {
 				list = EntityFinder.findRelated(box, GenericEntity.getStaticInstance(BoxCategory.class));
+			}
 			List userList =
 				EntityFinder.findAllByColumn(
 						GenericEntity.getStaticInstance(BoxCategory.class),
@@ -117,8 +118,9 @@ public class BoxFinder {
 			if (userList != null) {
 				if (list != null) {
 					for (int a = 0; a < list.size(); a++) {
-						if (!userList.contains(list.get(a)))
+						if (!userList.contains(list.get(a))) {
 							userList.add(list.get(a));
+						}
 					}
 				}
 				return userList;
@@ -169,8 +171,9 @@ public class BoxFinder {
 	public static List getCategoriesInBox(int boxID) {
 		try {
 			BoxEntity box = BoxFinder.getBox(boxID);
-			if (box != null)
+			if (box != null) {
 				return EntityFinder.findRelated(box, GenericEntity.getStaticInstance(BoxCategory.class));
+			}
 			return null;
 		}
 		catch (Exception e) {
@@ -299,8 +302,9 @@ public class BoxFinder {
 			if (L != null) {
 				return ((ICObjectInstance) L.get(0)).getID();
 			}
-			else
+			else {
 				return -1;
+			}
 		}
 		catch (SQLException ex) {
 			ex.printStackTrace();

@@ -71,13 +71,13 @@ public BoxCategoryEditor(){
 
      */
 
-    _isAdmin = true; //AccessControl.hasEditPermission(this,iwc);
+    this._isAdmin = true; //AccessControl.hasEditPermission(this,iwc);
 
-    _iwb = iwc.getIWMainApplication().getBundle(Builderaware.IW_CORE_BUNDLE_IDENTIFIER);
+    this._iwb = iwc.getIWMainApplication().getBundle(Builderaware.IW_CORE_BUNDLE_IDENTIFIER);
 
-    _iwrb = getResourceBundle(iwc);
+    this._iwrb = getResourceBundle(iwc);
 
-    addTitle(_iwrb.getLocalizedString("box_category_editor","Category Editor"));
+    addTitle(this._iwrb.getLocalizedString("box_category_editor","Category Editor"));
 
     Locale currentLocale = iwc.getCurrentLocale();
     Locale chosenLocale;
@@ -85,13 +85,13 @@ public BoxCategoryEditor(){
 
     try {
 
-      _userID = LoginBusinessBean.getUser(iwc).getID();
+      this._userID = LoginBusinessBean.getUser(iwc).getID();
 
     }
 
     catch (Exception e) {
 
-      _userID = -1;
+      this._userID = -1;
 
     }
 
@@ -121,7 +121,7 @@ public BoxCategoryEditor(){
 
 
 
-    if ( _isAdmin ) {
+    if ( this._isAdmin ) {
 
       processForm(iwc, iLocaleId, sLocaleId);
 
@@ -143,13 +143,13 @@ public BoxCategoryEditor(){
 
       try {
 
-        _boxID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID));
+        this._boxID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID));
 
       }
 
       catch (NumberFormatException e) {
 
-        _boxID = -1;
+        this._boxID = -1;
 
       }
 
@@ -161,13 +161,13 @@ public BoxCategoryEditor(){
 
       try {
 
-        _boxCategoryID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_CATEGORY_ID));
+        this._boxCategoryID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_CATEGORY_ID));
 
       }
 
       catch (NumberFormatException e) {
 
-        _boxCategoryID = -1;
+        this._boxCategoryID = -1;
 
       }
 
@@ -187,7 +187,7 @@ public BoxCategoryEditor(){
 
         saveCategory(iwc,iLocaleId);
 
-        _boxCategoryID = -1;
+        this._boxCategoryID = -1;
 
       }
 
@@ -199,7 +199,7 @@ public BoxCategoryEditor(){
 
       try {
 
-        _boxCategoryID = Integer.parseInt((String)iwc.getSessionAttribute(BoxBusiness.PARAMETER_CATEGORY_ID));
+        this._boxCategoryID = Integer.parseInt((String)iwc.getSessionAttribute(BoxBusiness.PARAMETER_CATEGORY_ID));
 
         iwc.removeSessionAttribute(BoxBusiness.PARAMETER_CATEGORY_ID);
 
@@ -207,7 +207,7 @@ public BoxCategoryEditor(){
 
       catch (NumberFormatException e) {
 
-        _boxCategoryID = -1;
+        this._boxCategoryID = -1;
 
       }
 
@@ -215,7 +215,7 @@ public BoxCategoryEditor(){
 
 
 
-    if ( _boxCategoryID != -1 ) {
+    if ( this._boxCategoryID != -1 ) {
 
       if ( iwc.getParameter(BoxBusiness.PARAMETER_MODE) != null ) {
 
@@ -223,7 +223,7 @@ public BoxCategoryEditor(){
 
           deleteCategory(iwc);
 
-          _boxCategoryID = -1;
+          this._boxCategoryID = -1;
 
         }
 
@@ -245,7 +245,7 @@ public BoxCategoryEditor(){
 
   private void initializeFields(int iLocaleID) {
 
-    String categoryName = BoxBusiness.getLocalizedString(BoxFinder.getCategory(_boxCategoryID),iLocaleID);
+    String categoryName = BoxBusiness.getLocalizedString(BoxFinder.getCategory(this._boxCategoryID),iLocaleID);
 
 
 
@@ -259,7 +259,7 @@ public BoxCategoryEditor(){
 
 
 
-    DropdownMenu categoryDrop = BoxBusiness.getCategories(BoxBusiness.PARAMETER_CATEGORY_ID,iLocaleID,BoxFinder.getBox(_boxID),_userID);
+    DropdownMenu categoryDrop = BoxBusiness.getCategories(BoxBusiness.PARAMETER_CATEGORY_ID,iLocaleID,BoxFinder.getBox(this._boxID),this._userID);
 
       categoryDrop.addMenuElementFirst("-1","");
 
@@ -267,17 +267,17 @@ public BoxCategoryEditor(){
 
       categoryDrop.setToSubmit();
 
-      categoryDrop.setSelectedElement(Integer.toString(_boxCategoryID));
+      categoryDrop.setSelectedElement(Integer.toString(this._boxCategoryID));
 
     categoryTable.add(categoryDrop,1,1);
 
-    categoryTable.add(new Link(_iwb.getImage("shared/create.gif")),3,1);
+    categoryTable.add(new Link(this._iwb.getImage("shared/create.gif")),3,1);
 
-    SubmitButton categoryButton = new SubmitButton(_iwb.getImage("shared/delete.gif"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_DELETE);
+    SubmitButton categoryButton = new SubmitButton(this._iwb.getImage("shared/delete.gif"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_DELETE);
 
-    if ( _boxCategoryID != -1 )
-
-      categoryTable.add(categoryButton,3,1);
+    if ( this._boxCategoryID != -1 ) {
+			categoryTable.add(categoryButton,3,1);
+		}
 
 
 
@@ -287,7 +287,7 @@ public BoxCategoryEditor(){
 
       localeDrop.setSelectedElement(Integer.toString(iLocaleID));
 
-    addLeft(_iwrb.getLocalizedString("locale","Locale")+": ",localeDrop,false);
+    addLeft(this._iwrb.getLocalizedString("locale","Locale")+": ",localeDrop,false);
 
 
 
@@ -303,19 +303,19 @@ public BoxCategoryEditor(){
 
 
 
-    addLeft(_iwrb.getLocalizedString("category","Category")+":",categoryTable,true,false);
+    addLeft(this._iwrb.getLocalizedString("category","Category")+":",categoryTable,true,false);
 
-    addLeft(_iwrb.getLocalizedString("category_name","Name")+":",nameInput,true);
+    addLeft(this._iwrb.getLocalizedString("category_name","Name")+":",nameInput,true);
 
-    addHiddenInput(new HiddenInput(BoxBusiness.PARAMETER_BOX_ID,Integer.toString(_boxID)));
+    addHiddenInput(new HiddenInput(BoxBusiness.PARAMETER_BOX_ID,Integer.toString(this._boxID)));
 
     addHiddenInput(new HiddenInput(BoxBusiness.PARAMETER_LOCALE_ID,Integer.toString(iLocaleID)));
 
 
 
-    addSubmitButton(new SubmitButton(_iwrb.getLocalizedImageButton("close","CLOSE"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_CLOSE));
+    addSubmitButton(new SubmitButton(this._iwrb.getLocalizedImageButton("close","CLOSE"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_CLOSE));
 
-    addSubmitButton(new SubmitButton(_iwrb.getLocalizedImageButton("save","SAVE"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_SAVE));
+    addSubmitButton(new SubmitButton(this._iwrb.getLocalizedImageButton("save","SAVE"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_SAVE));
 
   }
 
@@ -323,7 +323,7 @@ public BoxCategoryEditor(){
 
   private void deleteCategory(IWContext iwc) {
 
-    BoxBusiness.deleteCategory(_boxCategoryID);
+    BoxBusiness.deleteCategory(this._boxCategoryID);
 
   }
 
@@ -341,13 +341,13 @@ public BoxCategoryEditor(){
 
     if ( categoryName == null || categoryName.length() == 0 ) {
 
-      categoryName = _iwrb.getLocalizedString("no_text","No text entered");
+      categoryName = this._iwrb.getLocalizedString("no_text","No text entered");
 
     }
 
     if ( localeString != null ) {
 
-      boxCategoryID = BoxBusiness.saveCategory(_userID,_boxCategoryID,categoryName,Integer.parseInt(localeString));
+      boxCategoryID = BoxBusiness.saveCategory(this._userID,this._boxCategoryID,categoryName,Integer.parseInt(localeString));
 
       iwc.setSessionAttribute(BoxBusiness.PARAMETER_CATEGORY_ID,Integer.toString(boxCategoryID));
 
