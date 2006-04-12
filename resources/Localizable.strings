@@ -1,13 +1,14 @@
-#Fri Oct 24 12:54:49 CEST 2003
 Mobile_phone=
 _blank=N\u00FDr gluggi
 _parent=Rammi foreldris
 _self=Sami gluggi
 _top=Efsti rammi
 box_admin=Skjalastj\u00F3ri
+box_category_choose=Category Chooser
 box_category_editor=Skjalaflokkar
 category=Flokkur
 category_name=Nafn
+close=CLOSE
 file=Skjal
 iw.component.com.idega.block.boxoffice.presentation.Box.name=Box
 link=Tengill
@@ -16,5 +17,6 @@ locale=Tungum\u00E1l
 no_access=Engin r\u00E9ttindi
 no_text=Engin texti
 page=S\u00ED\u00F0a
+save=SAVE
 target=\u00C1fangasta\u00F0ur
 type=Tegund
