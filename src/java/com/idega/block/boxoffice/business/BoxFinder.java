@@ -112,7 +112,7 @@ public class BoxFinder {
 			}
 			List userList =
 				EntityFinder.findAllByColumn(
-						GenericEntity.getStaticInstance(BoxCategory.class),
+					GenericEntity.getStaticInstance(BoxCategory.class),
 					com.idega.block.boxoffice.data.BoxCategoryBMPBean.getColumnNameUserID(),
 					userID);
 			if (userList != null) {

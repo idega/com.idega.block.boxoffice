@@ -4,7 +4,6 @@ package com.idega.block.boxoffice.presentation;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Locale;
-
 import com.idega.block.boxoffice.business.BoxBusiness;
 import com.idega.block.boxoffice.business.BoxFinder;
 import com.idega.block.boxoffice.data.BoxLink;
@@ -13,10 +12,12 @@ import com.idega.builder.presentation.IBPageChooser;
 import com.idega.core.accesscontrol.business.LoginBusinessBean;
 import com.idega.core.localisation.business.ICLocaleBusiness;
 import com.idega.core.localisation.presentation.ICLocalePresentation;
-import com.idega.idegaweb.IWCacheManager;
+import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
+import com.idega.idegaweb.block.presentation.Builderaware;
 import com.idega.idegaweb.presentation.IWAdminWindow;
 import com.idega.presentation.IWContext;
+import com.idega.presentation.Image;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.ui.CloseButton;
 import com.idega.presentation.ui.DropdownMenu;
@@ -28,17 +29,26 @@ public class BoxEditorWindow extends IWAdminWindow{
 
 private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.boxoffice";
 private boolean _isAdmin = false;
+private boolean _superAdmin = false;
 private boolean _update = false;
+private boolean _save = false;
+private int _iObjInsId = -1;
+
 private int _boxID = -1;
 private int _boxCategoryID = -1;
 private int _linkID = -1;
 private int _userID = -1;
 private boolean _newObjInst = false;
+private String _newWithAttribute;
+private Image _editImage;
+private Image _createImage;
+private Image _deleteImage;
 private int _type = -1;
 private int _fileID = -1;
 private int _pageID = -1;
 private String _target;
 
+private IWBundle _iwb;
 private IWResourceBundle _iwrb;
 
 public BoxEditorWindow(){
@@ -54,6 +64,8 @@ public BoxEditorWindow(){
      * @todo permission
      */
     this._isAdmin = true; //AccessControl.hasEditPermission(this,iwc);
+    this._superAdmin = iwc.hasEditPermission(this);
+    this._iwb = iwc.getIWMainApplication().getBundle(Builderaware.IW_CORE_BUNDLE_IDENTIFIER);
     this._iwrb = getResourceBundle(iwc);
     addTitle(this._iwrb.getLocalizedString("box_admin","Box Admin"));
     Locale currentLocale = iwc.getCurrentLocale();
@@ -67,6 +79,10 @@ public BoxEditorWindow(){
     catch (Exception e) {
       this._userID = -1;
     }
+
+    this._editImage = this._iwb.getImage("shared/edit.gif");
+    this._createImage = this._iwb.getImage("shared/create.gif");
+    this._deleteImage = this._iwb.getImage("shared/delete.gif");
 
     String sLocaleId = iwc.getParameter(BoxBusiness.PARAMETER_LOCALE_DROP);
 
@@ -211,14 +227,14 @@ public BoxEditorWindow(){
     }
     if ( this._type == -1 && this._update ) {
       if ( link.getPageID() != -1 ) {
-				this._type = BoxBusiness.PAGE;
-			}
-			else if ( link.getFileID() != -1 ) {
-				this._type = BoxBusiness.FILE;
-			}
-			else if ( link.getURL() != null ) {
-				this._type = BoxBusiness.LINK;
-			}
+		this._type = BoxBusiness.PAGE;
+	}
+	else if ( link.getFileID() != -1 ) {
+		this._type = BoxBusiness.FILE;
+	}
+	else if ( link.getURL() != null ) {
+		this._type = BoxBusiness.LINK;
+	}
     }
     if ( this._type == -1 ) {
       this._type = BoxBusiness.LINK;
@@ -269,14 +285,14 @@ public BoxEditorWindow(){
     FileChooser fileChooser = new FileChooser(BoxBusiness.PARAMETER_FILE_ID,STYLE);
     if ( link != null && this._update ) {
       if ( link.getFileID() != -1 ) {
-				fileChooser.setSelectedFile(BoxFinder.getFile(link.getFileID()));
-			}
+		fileChooser.setSelectedFile(BoxFinder.getFile(link.getFileID()));
+	}
     }
     IBPageChooser pageChooser = new IBPageChooser(BoxBusiness.PARAMETER_PAGE_ID,STYLE);
     if ( link != null && this._update ) {
       if ( link.getPageID() != -1 ) {
-				pageChooser.setSelectedPage(BoxFinder.getPage(link.getPageID()));
-			}
+		pageChooser.setSelectedPage(BoxFinder.getPage(link.getPageID()));
+	}
     }
 
     addLeft(this._iwrb.getLocalizedString("category","Category")+":",categoryDrop,true);
@@ -284,14 +300,14 @@ public BoxEditorWindow(){
     addLeft(this._iwrb.getLocalizedString("type","Type")+":",typeDrop,true);
 
     if ( this._type == BoxBusiness.LINK ) {
-			addLeft(this._iwrb.getLocalizedString("link","Link")+":",linkURL,true);
-		}
-		else if ( this._type == BoxBusiness.FILE ) {
-			addLeft(this._iwrb.getLocalizedString("file","File")+":",fileChooser,true);
-		}
-		else if ( this._type == BoxBusiness.PAGE ) {
-			addLeft(this._iwrb.getLocalizedString("page","Page")+":",pageChooser,true);
-		}
+		addLeft(this._iwrb.getLocalizedString("link","Link")+":",linkURL,true);
+	}
+	else if ( this._type == BoxBusiness.FILE ) {
+		addLeft(this._iwrb.getLocalizedString("file","File")+":",fileChooser,true);
+	}
+	else if ( this._type == BoxBusiness.PAGE ) {
+		addLeft(this._iwrb.getLocalizedString("page","Page")+":",pageChooser,true);
+	}
 
     addLeft(this._iwrb.getLocalizedString("target","Target")+":",targetDrop,true);
 
@@ -349,14 +365,12 @@ public BoxEditorWindow(){
 
       iwc.setSessionAttribute(BoxBusiness.PARAMETER_LINK_ID,new Integer(linkID));
     }
-		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
   }
 
   private void deleteBoxLink(IWContext iwc) {
     System.out.println("Deleting...");
     iwc.removeSessionAttribute(BoxBusiness.PARAMETER_LINK_ID);
     BoxBusiness.deleteLink(this._linkID);
-		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
     setParentToReload();
     close();
   }

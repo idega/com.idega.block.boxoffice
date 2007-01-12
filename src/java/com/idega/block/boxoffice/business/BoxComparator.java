@@ -1,5 +1,5 @@
 /*
- * $Id: BoxComparator.java,v 1.2 2006/04/09 11:42:45 laddi Exp $
+ * $Id: BoxComparator.java,v 1.1.2.1 2007/01/12 19:32:11 idegaweb Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -18,10 +18,10 @@ import com.idega.core.localisation.business.ICLocaleBusiness;
 
 
 /**
- * Last modified: $Date: 2006/04/09 11:42:45 $ by $Author: laddi $
+ * Last modified: $Date: 2007/01/12 19:32:11 $ by $Author: idegaweb $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1.2.1 $
  */
 public class BoxComparator implements Comparator {
 

@@ -75,6 +75,8 @@ public class Box extends Block implements Builderaware {
 	private int _numberOfDisplayed;
 	private String _categoryStyle;
 	private String _linkStyle;
+	private String _visitedStyle;
+	private String _activeStyle;
 	private String _hoverStyle;
 	private String _name;
 	private String _headerStyle;
@@ -86,6 +88,8 @@ public class Box extends Block implements Builderaware {
 	private int iSpaceBetween = 0;
 	private boolean iUseNoStyling = false;
 
+	private String _target;
+
 	public Box() {
 		setDefaultValues();
 	}
@@ -93,7 +97,6 @@ public class Box extends Block implements Builderaware {
 	public Box(int boxID) {
 		this();
 		this._boxID = boxID;
-		setCacheable(getCacheKey(), (20 * 60 * 1000));
 	}
 
 	public Box(String attribute) {
@@ -101,10 +104,6 @@ public class Box extends Block implements Builderaware {
 		this._attribute = attribute;
 	}
 
-	public String getCacheKey() {
-		return "box_cache";
-	}
-	
 	public void main(IWContext iwc) throws Exception {
 		this._iwrb = getResourceBundle(iwc);
 		this._iwbBox = getBundle(iwc);
@@ -653,7 +652,10 @@ public class Box extends Block implements Builderaware {
 		this._numberOfDisplayed = 4;
 		this._categoryStyle = "font-family: Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: bold";
 		this._linkStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
+		this._visitedStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
+		this._activeStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
 		this._hoverStyle = "font-family: Arial, Helvetica,sans-serif; font-size: 8pt; color: #000000;";
+		this._target = Link.TARGET_TOP_WINDOW;
 	}
 
 	public void setNumberOfColumns(int columns) {
@@ -719,6 +721,7 @@ public class Box extends Block implements Builderaware {
 	}
 
 	public void setTarget(String target) {
+		this._target = target;
 	}
 
 	public void setShowOnlyBelongingToUser(boolean show) {
@@ -734,6 +737,8 @@ public class Box extends Block implements Builderaware {
 	 */
 	public void setLinkStyle(String linkStyle, String activeStyle, String visitedStyle, String hoverStyle) {
 		this._linkStyle = linkStyle;
+		this._visitedStyle = linkStyle;
+		this._activeStyle = visitedStyle;
 		this._hoverStyle = hoverStyle;
 	}
 

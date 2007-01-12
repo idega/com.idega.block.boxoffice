@@ -3,9 +3,7 @@ package com.idega.block.boxoffice.data;
 
 import java.sql.SQLException;
 import java.util.Locale;
-
 import javax.transaction.TransactionManager;
-
 import com.idega.block.text.business.TextFinder;
 import com.idega.block.text.data.LocalizedText;
 import com.idega.data.GenericEntity;
@@ -24,7 +22,7 @@ public class BoxCategoryBMPBean extends com.idega.data.GenericEntity implements
 	}
 
 	public void insertStartData() throws Exception {
-		String[] entries = { "Ýmislegt", "Tenglar", "Greinar", "Stýriskjöl", "Leiðbeiningar", "Misc", "Links",
+		String[] entries = { "ï¿½mislegt", "Tenglar", "Greinar", "Stï¿½riskjï¿½l", "Leiï¿½beiningar", "Misc", "Links",
 				"Articles", "Documents", "Instructions" };
 		TransactionManager t = IdegaTransactionManager.getInstance();
 		t.begin();

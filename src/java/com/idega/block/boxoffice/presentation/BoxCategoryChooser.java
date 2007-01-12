@@ -1,19 +1,25 @@
 package com.idega.block.boxoffice.presentation;
 
+
+
+
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import com.idega.idegaweb.block.presentation.Builderaware;
 import com.idega.block.boxoffice.business.BoxBusiness;
 import com.idega.block.boxoffice.business.BoxFinder;
 import com.idega.block.boxoffice.data.BoxCategory;
 import com.idega.block.boxoffice.data.BoxEntity;
 import com.idega.block.text.business.TextFinder;
 import com.idega.block.text.data.LocalizedText;
+import com.idega.core.accesscontrol.business.LoginBusinessBean;
 import com.idega.core.localisation.business.ICLocaleBusiness;
-import com.idega.idegaweb.IWCacheManager;
+import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.presentation.IWAdminWindow;
 import com.idega.presentation.IWContext;
@@ -24,251 +30,335 @@ import com.idega.presentation.ui.SelectionBox;
 import com.idega.presentation.ui.SelectionDoubleBox;
 import com.idega.presentation.ui.SubmitButton;
 
-public class BoxCategoryChooser extends IWAdminWindow {
 
-	private final static String IW_BUNDLE_IDENTIFIER = "com.idega.block.boxoffice";
 
-	private boolean _isAdmin = false;
+public class BoxCategoryChooser extends IWAdminWindow{
 
-	private int _boxID = -1;
 
-	private IWResourceBundle _iwrb;
 
-	public BoxCategoryChooser() {
+private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.boxoffice";
 
-		setWidth(380);
+private boolean _isAdmin = false;
 
-		setHeight(180);
+private boolean _save = false;
 
-		setMethod("get");
+private boolean _update = false;
 
-	}
+private int _userID = -1;
 
-	public void main(IWContext iwc) throws Exception {
-		this._isAdmin = true; // AccessControl.hasEditPermission(this,iwc);
-		this._iwrb = getResourceBundle(iwc);
+private int _boxID = -1;
 
-		addTitle(this._iwrb.getLocalizedString("box_category_choose", "Category Chooser"));
+private int _boxCategoryID = -1;
 
-		Locale currentLocale = iwc.getCurrentLocale();
-		Locale chosenLocale;
 
-		String sLocaleId = iwc.getParameter(BoxBusiness.PARAMETER_LOCALE_DROP);
 
-		int iLocaleId = -1;
+private IWBundle _iwb;
 
-		if (sLocaleId != null) {
+private IWResourceBundle _iwrb;
 
-			iLocaleId = Integer.parseInt(sLocaleId);
 
-			chosenLocale = ICLocaleBusiness.getLocaleReturnIcelandicLocaleIfNotFound(iLocaleId);
 
-		}
+public BoxCategoryChooser(){
 
-		else {
+  setWidth(380);
 
-			chosenLocale = currentLocale;
+  setHeight(180);
 
-			iLocaleId = ICLocaleBusiness.getLocaleId(chosenLocale);
+  setMethod("get");
 
-		}
+}
 
-		if (this._isAdmin) {
 
-			processForm(iwc, iLocaleId, sLocaleId);
 
-		}
+  public void main(IWContext iwc) throws Exception {
 
-		else {
+    /**
 
-			noAccess();
+     * @todo permission
 
-		}
+     */
 
-	}
+    this._isAdmin = true; //AccessControl.hasEditPermission(this,iwc);
 
-	private void processForm(IWContext iwc, int iLocaleId, String sLocaleId) {
+    this._iwb = iwc.getIWMainApplication().getBundle(Builderaware.IW_CORE_BUNDLE_IDENTIFIER);
 
-		if (iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID) != null) {
+    this._iwrb = getResourceBundle(iwc);
 
-			try {
+    addTitle(this._iwrb.getLocalizedString("box_category_choose","Category Chooser"));
 
-				this._boxID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID));
+    Locale currentLocale = iwc.getCurrentLocale();
+    Locale chosenLocale;
 
-			}
+    try {
 
-			catch (NumberFormatException e) {
+      this._userID = LoginBusinessBean.getUser(iwc).getID();
 
-				this._boxID = -1;
+    }
 
-			}
+    catch (Exception e) {
 
-		}
+      this._userID = -1;
 
-		if (iwc.getParameter(BoxBusiness.PARAMETER_MODE) != null) {
+    }
 
-			if (iwc.getParameter(BoxBusiness.PARAMETER_MODE).equalsIgnoreCase(BoxBusiness.PARAMETER_CLOSE)) {
 
-				close();
 
-			}
+    String sLocaleId = iwc.getParameter(BoxBusiness.PARAMETER_LOCALE_DROP);
 
-			else if (iwc.getParameter(BoxBusiness.PARAMETER_MODE).equalsIgnoreCase(BoxBusiness.PARAMETER_SAVE)) {
 
-				save(iwc);
 
-			}
+    int iLocaleId = -1;
 
-		}
+    if(sLocaleId!= null){
 
-		initializeFields(iLocaleId);
+      iLocaleId = Integer.parseInt(sLocaleId);
 
-	}
+      chosenLocale = ICLocaleBusiness.getLocaleReturnIcelandicLocaleIfNotFound(iLocaleId);
 
-	private void initializeFields(int iLocaleID) {
+    }
 
-		Form myForm = new Form();
+    else{
 
-		myForm.setMethod("get");
+      chosenLocale = currentLocale;
 
-		Table formTable = new Table(1, 2);
+      iLocaleId = ICLocaleBusiness.getLocaleId(chosenLocale);
 
-		formTable.setAlignment(1, 2, "right");
+    }
 
-		SelectionDoubleBox sdb = new SelectionDoubleBox(BoxBusiness.CATEGORY_SELECTION, "Not in", "In");
 
-		SelectionBox left = sdb.getLeftBox();
 
-		left.setMarkupAttribute("style", STYLE);
+    if ( this._isAdmin ) {
 
-		left.setHeight(6);
+      processForm(iwc, iLocaleId, sLocaleId);
 
-		left.selectAllOnSubmit();
+    }
 
-		SelectionBox right = sdb.getRightBox();
+    else {
 
-		right.setMarkupAttribute("style", STYLE);
+      noAccess();
 
-		right.setHeight(6);
+    }
 
-		right.selectAllOnSubmit();
+  }
 
-		List categoriesInBox = BoxFinder.getCategoriesInBox(this._boxID);
 
-		Iterator iter = null;
 
-		if (categoriesInBox != null) {
+  private void processForm(IWContext iwc, int iLocaleId, String sLocaleId) {
 
-			iter = categoriesInBox.iterator();
+    if ( iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID) != null ) {
 
-			while (iter.hasNext()) {
+      try {
 
-				BoxCategory item = (BoxCategory) iter.next();
+        this._boxID = Integer.parseInt(iwc.getParameter(BoxBusiness.PARAMETER_BOX_ID));
 
-				LocalizedText locText = TextFinder.getLocalizedText(item, iLocaleID);
+      }
 
-				String locString = "$language$";
+      catch (NumberFormatException e) {
 
-				if (locText != null) {
+        this._boxID = -1;
 
-					locString = locText.getHeadline();
+      }
 
-				}
+    }
 
-				right.addElement(Integer.toString(item.getID()), locString);
 
-			}
 
-		}
+    if ( iwc.getParameter(BoxBusiness.PARAMETER_MODE) != null ) {
 
-		List categoriesNotInBox = BoxFinder.getAllCategories();
+      if ( iwc.getParameter(BoxBusiness.PARAMETER_MODE).equalsIgnoreCase(BoxBusiness.PARAMETER_CLOSE) ) {
 
-		if (categoriesNotInBox != null) {
-			if (categoriesInBox != null) {
-				categoriesNotInBox.removeAll(categoriesInBox);
-			}
-			iter = categoriesNotInBox.iterator();
+        close();
 
-			while (iter.hasNext()) {
+      }
 
-				BoxCategory item = (BoxCategory) iter.next();
+      else if ( iwc.getParameter(BoxBusiness.PARAMETER_MODE).equalsIgnoreCase(BoxBusiness.PARAMETER_SAVE) ) {
 
-				LocalizedText locText = TextFinder.getLocalizedText(item, iLocaleID);
+        save(iwc);
 
-				String locString = "$language$";
+      }
 
-				if (locText != null) {
+    }
 
-					locString = locText.getHeadline();
 
-				}
 
-				left.addElement(Integer.toString(item.getID()), locString);
+    initializeFields(iLocaleId);
 
-			}
+  }
 
-		}
 
-		formTable.add(new SubmitButton(this._iwrb.getLocalizedImageButton("close", "CLOSE"), BoxBusiness.PARAMETER_MODE, BoxBusiness.PARAMETER_CLOSE), 1, 2);
 
-		formTable.add(new SubmitButton(this._iwrb.getLocalizedImageButton("save", "SAVE"), BoxBusiness.PARAMETER_MODE, BoxBusiness.PARAMETER_SAVE), 1, 2);
+  private void initializeFields(int iLocaleID) {
 
-		myForm.add(new HiddenInput(BoxBusiness.PARAMETER_BOX_ID, Integer.toString(this._boxID)));
+    Form myForm = new Form();
 
-		formTable.add(sdb, 1, 1);
+      myForm.setMethod("get");
 
-		myForm.add(formTable);
 
-		add(myForm);
 
-	}
+    Table formTable = new Table(1,2);
 
-	private void save(IWContext iwc) {
+      formTable.setAlignment(1,2,"right");
 
-		BoxEntity box = BoxFinder.getBox(this._boxID);
 
-		String[] detach = iwc.getParameterValues(BoxBusiness.CATEGORY_SELECTION + "_left");
 
-		if (detach != null) {
+    SelectionDoubleBox sdb = new SelectionDoubleBox(BoxBusiness.CATEGORY_SELECTION,"Not in","In");
 
-			for (int a = 0; a < detach.length; a++) {
 
-				BoxBusiness.detachCategory(this._boxID, Integer.parseInt(detach[a]));
 
-			}
+    SelectionBox left = sdb.getLeftBox();
 
-		}
+    left.setMarkupAttribute("style",STYLE);
 
-		String[] attach = iwc.getParameterValues(BoxBusiness.CATEGORY_SELECTION);
+    left.setHeight(6);
 
-		if (attach != null) {
+    left.selectAllOnSubmit();
 
-			for (int a = 0; a < attach.length; a++) {
 
-				BoxBusiness.addToBox(box, Integer.parseInt(attach[a]));
 
-			}
+    SelectionBox right = sdb.getRightBox();
 
-		}
-		
-		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
+    right.setMarkupAttribute("style",STYLE);
 
-		setParentToReload();
+    right.setHeight(6);
 
-		close();
+    right.selectAllOnSubmit();
 
-	}
 
-	private void noAccess() throws IOException, SQLException {
 
-		close();
+    List categoriesInBox = BoxFinder.getCategoriesInBox(this._boxID);
 
-	}
+    Iterator iter = null;
 
-	public String getBundleIdentifier() {
+    if(categoriesInBox != null){
 
-		return IW_BUNDLE_IDENTIFIER;
+      iter = categoriesInBox.iterator();
 
-	}
+      while (iter.hasNext()) {
+
+        BoxCategory item = (BoxCategory) iter.next();
+
+        LocalizedText locText = TextFinder.getLocalizedText(item,iLocaleID);
+
+        String locString = "$language$";
+
+        if ( locText != null ) {
+
+          locString = locText.getHeadline();
+
+        }
+
+        right.addElement(Integer.toString(item.getID()),locString);
+
+      }
+
+    }
+
+
+
+    List categoriesNotInBox = BoxFinder.getAllCategories();
+
+    if(categoriesNotInBox != null){
+    		if (categoriesInBox != null) {
+    			categoriesNotInBox.removeAll(categoriesInBox);
+    		}
+      iter = categoriesNotInBox.iterator();
+
+      while (iter.hasNext()) {
+
+        BoxCategory item = (BoxCategory) iter.next();
+
+        LocalizedText locText = TextFinder.getLocalizedText(item,iLocaleID);
+
+        String locString = "$language$";
+
+        if ( locText != null ) {
+
+          locString = locText.getHeadline();
+
+        }
+
+        left.addElement(Integer.toString(item.getID()),locString);
+
+      }
+
+    }
+
+
+
+    formTable.add(new SubmitButton(this._iwrb.getLocalizedImageButton("close","CLOSE"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_CLOSE),1,2);
+
+    formTable.add(new SubmitButton(this._iwrb.getLocalizedImageButton("save","SAVE"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_SAVE),1,2);
+
+    myForm.add(new HiddenInput(BoxBusiness.PARAMETER_BOX_ID,Integer.toString(this._boxID)));
+
+
+
+    formTable.add(sdb,1,1);
+
+    myForm.add(formTable);
+
+    add(myForm);
+
+  }
+
+
+
+  private void save(IWContext iwc) {
+
+    BoxEntity box = BoxFinder.getBox(this._boxID);
+
+
+
+    String[] detach = iwc.getParameterValues(BoxBusiness.CATEGORY_SELECTION+"_left");
+
+    if ( detach != null ) {
+
+      for ( int a = 0; a < detach.length; a++ ) {
+
+        BoxBusiness.detachCategory(this._boxID,Integer.parseInt(detach[a]));
+
+      }
+
+    }
+
+
+
+    String[] attach = iwc.getParameterValues(BoxBusiness.CATEGORY_SELECTION);
+
+    if ( attach != null ) {
+
+      for ( int a = 0; a < attach.length; a++ ) {
+
+        BoxBusiness.addToBox(box,Integer.parseInt(attach[a]));
+
+      }
+
+    }
+
+
+
+    setParentToReload();
+
+    close();
+
+  }
+
+
+
+  private void noAccess() throws IOException,SQLException {
+
+    close();
+
+  }
+
+
+
+  public String getBundleIdentifier(){
+
+    return IW_BUNDLE_IDENTIFIER;
+
+  }
+
+
 
 }

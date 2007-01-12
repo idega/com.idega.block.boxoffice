@@ -13,7 +13,6 @@ import com.idega.core.accesscontrol.business.LoginBusinessBean;
 import com.idega.core.localisation.business.ICLocaleBusiness;
 import com.idega.core.localisation.presentation.ICLocalePresentation;
 import com.idega.idegaweb.IWBundle;
-import com.idega.idegaweb.IWCacheManager;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.block.presentation.Builderaware;
 import com.idega.idegaweb.presentation.IWAdminWindow;
@@ -34,6 +33,10 @@ public class BoxCategoryEditor extends IWAdminWindow{
 private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.boxoffice";
 
 private boolean _isAdmin = false;
+
+private boolean _save = false;
+
+private boolean _update = false;
 
 private int _userID = -1;
 
@@ -231,6 +234,8 @@ public BoxCategoryEditor(){
 
       else {
 
+        this._update = true;
+
       }
 
     }
@@ -276,8 +281,8 @@ public BoxCategoryEditor(){
     SubmitButton categoryButton = new SubmitButton(this._iwb.getImage("shared/delete.gif"),BoxBusiness.PARAMETER_MODE,BoxBusiness.PARAMETER_DELETE);
 
     if ( this._boxCategoryID != -1 ) {
-			categoryTable.add(categoryButton,3,1);
-		}
+		categoryTable.add(categoryButton,3,1);
+	}
 
 
 
@@ -353,7 +358,6 @@ public BoxCategoryEditor(){
 
     }
 
-		IWCacheManager.getInstance(iwc.getIWMainApplication()).invalidateCache("box_cache");
   }
 
 
