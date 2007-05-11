@@ -11,6 +11,7 @@ import com.idega.block.boxoffice.data.BoxLink;
 import com.idega.block.media.presentation.FileChooser;
 import com.idega.builder.presentation.IBPageChooser;
 import com.idega.core.accesscontrol.business.LoginBusinessBean;
+import com.idega.core.builder.data.ICPage;
 import com.idega.core.localisation.business.ICLocaleBusiness;
 import com.idega.core.localisation.presentation.ICLocalePresentation;
 import com.idega.idegaweb.IWCacheManager;
@@ -275,7 +276,8 @@ public BoxEditorWindow(){
     IBPageChooser pageChooser = new IBPageChooser(BoxBusiness.PARAMETER_PAGE_ID,STYLE);
     if ( link != null && this._update ) {
       if ( link.getPageID() != -1 ) {
-				pageChooser.setSelectedPage(BoxFinder.getPage(link.getPageID()));
+    	  ICPage page = BoxFinder.getPage(link.getPageID());
+				pageChooser.setSelectedPage(page.getName(), String.valueOf(page.getID()));
 			}
     }
 
