@@ -277,7 +277,7 @@ public BoxEditorWindow(){
     if ( link != null && this._update ) {
       if ( link.getPageID() != -1 ) {
     	  ICPage page = BoxFinder.getPage(link.getPageID());
-				pageChooser.setSelectedPage(page.getName(), String.valueOf(page.getID()));
+				pageChooser.setSelectedPage(page.getID(), page.getName());
 			}
     }
 
