@@ -1,5 +1,5 @@
 /*
- * $Id: BoxLayoutHandler.java,v 1.7 2004/06/28 14:07:44 thomas Exp $
+ * $Id: BoxLayoutHandler.java,v 1.8 2007/10/08 05:20:37 civilis Exp $
  *
  * Copyright (C) 2001 Idega hf. All Rights Reserved.
  *
@@ -53,4 +53,11 @@ public class BoxLayoutHandler implements ICPropertyHandler {
    */
   public void onUpdate(String values[], IWContext iwc) {
   }
+
+public PresentationObject getHandlerObject(String name, String stringValue,
+		IWContext iwc, boolean oldGenerationHandler, String instanceId,
+		String method) {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
