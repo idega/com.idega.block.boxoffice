@@ -15,9 +15,8 @@
   <description>Boxoffice</description>
   
   <scm>
-    <connection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</connection>
-    <developerConnection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</developerConnection>
-    <tag>com_idega_block_boxoffice-4_0_0</tag>
+    <connection>scm:cvs:ext:civilis@code.idega.com:/idega/cvs:com.idega.block.addon/com.idega.block.boxoffice/</connection>
+    <developerConnection>scm:cvs:ext:civilis@code.idega.com:/idega/cvs:com.idega.block.addon/com.idega.block.boxoffice/</developerConnection>
   </scm>
   <developers>
     <developer>
