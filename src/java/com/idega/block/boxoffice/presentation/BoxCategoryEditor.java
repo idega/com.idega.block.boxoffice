@@ -7,6 +7,7 @@ package com.idega.block.boxoffice.presentation;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Locale;
+
 import com.idega.block.boxoffice.business.BoxBusiness;
 import com.idega.block.boxoffice.business.BoxFinder;
 import com.idega.core.accesscontrol.business.LoginBusinessBean;
@@ -63,7 +64,8 @@ public BoxCategoryEditor(){
 
 
 
-  public void main(IWContext iwc) throws Exception {
+  @Override
+public void main(IWContext iwc) throws Exception {
 
     /**
 
@@ -85,7 +87,7 @@ public BoxCategoryEditor(){
 
     try {
 
-      this._userID = LoginBusinessBean.getUser(iwc).getID();
+      this._userID = LoginBusinessBean.getUser(iwc).getId();
 
     }
 
@@ -376,7 +378,8 @@ public BoxCategoryEditor(){
 
 
 
-  public String getBundleIdentifier(){
+  @Override
+public String getBundleIdentifier(){
 
     return IW_BUNDLE_IDENTIFIER;
 

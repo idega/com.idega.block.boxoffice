@@ -50,7 +50,8 @@ public BoxEditorWindow(){
   setStatus(true);
 }
 
-  public void main(IWContext iwc) throws Exception {
+  @Override
+public void main(IWContext iwc) throws Exception {
     /**
      * @todo permission
      */
@@ -59,11 +60,11 @@ public BoxEditorWindow(){
     addTitle(this._iwrb.getLocalizedString("box_admin","Box Admin"));
     Locale currentLocale = iwc.getCurrentLocale();
     Locale chosenLocale;
-    
+
     iwc.removeSessionAttribute(BoxBusiness.PARAMETER_CATEGORY_ID);
 
     try {
-      this._userID = LoginBusinessBean.getUser(iwc).getID();
+      this._userID = LoginBusinessBean.getUser(iwc).getId();
     }
     catch (Exception e) {
       this._userID = -1;
@@ -377,7 +378,8 @@ public BoxEditorWindow(){
     addSubmitButton(new CloseButton(this._iwrb.getImage("close.gif")));
   }
 
-  public String getBundleIdentifier(){
+  @Override
+public String getBundleIdentifier(){
     return IW_BUNDLE_IDENTIFIER;
   }
 
