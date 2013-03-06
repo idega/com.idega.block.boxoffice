@@ -24,7 +24,7 @@ public class BoxCategoryBMPBean extends com.idega.data.GenericEntity implements
 	}
 
 	public void insertStartData() throws Exception {
-		String[] entries = { "İmislegt", "Tenglar", "Greinar", "Stıriskjöl", "Leiğbeiningar", "Misc", "Links",
+		String[] entries = { "Ãmislegt", "Tenglar", "Greinar", "StÃ½riskjÃ¶l", "LeiÃ°beiningar", "Misc", "Links",
 				"Articles", "Documents", "Instructions" };
 		TransactionManager t = IdegaTransactionManager.getInstance();
 		t.begin();
